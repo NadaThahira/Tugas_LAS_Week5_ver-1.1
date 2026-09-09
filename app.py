@@ -134,13 +134,13 @@ st.markdown(
     """
     <div class="hero">
         <h1>🍎 Apple vs Orange Classifier 🍊</h1>
-        <p>Unggah foto apel atau jeruk, model Custom CNN akan memprediksi kelasnya secara instan.</p>
+        <p>Unggah gambar apel atau jeruk untuk memperoleh hasil klasifikasi dari model Custom CNN beserta tingkat keyakinannya.</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-tab_predict, tab_about = st.tabs(["🔍 Prediksi", "📄 Tentang & Versi"])
+tab_predict, tab_about = st.tabs(["🔍 Prediksi", "📄 Tentang Aplikasi"])
 
 # --------------------------------------------------------------------------------------
 # TAB 1 — PREDICT
@@ -212,9 +212,54 @@ with tab_predict:
 with tab_about:
     st.markdown("#### Tentang Aplikasi")
     st.write(
-        "Aplikasi ini men-deploy model klasifikasi citra biner (Apple vs Orange) berbasis "
-        "**Custom CNN** yang dibangun dari nol pada Week 2–4. Pengguna dapat mengunggah "
-        "gambar dan langsung melihat hasil prediksi beserta tingkat keyakinan model."
+        "**Apple vs Orange Classifier** adalah aplikasi klasifikasi citra biner yang membedakan "
+        "foto apel dan jeruk secara otomatis menggunakan model *Convolutional Neural Network* "
+        "(CNN) yang dibangun dan dilatih dari nol (bukan model pre-trained). Aplikasi ini "
+        "dikembangkan sebagai bagian dari proyek pembelajaran *Deep Learning* untuk klasifikasi "
+        "citra, mencakup tahap eksplorasi data, arsitektur model, pelatihan, evaluasi, hingga "
+        "deployment ke lingkungan produksi berbasis web."
+    )
+
+    st.markdown("#### Cara Kerja")
+    st.write(
+        "Saat pengguna mengunggah sebuah gambar, sistem akan mengubah ukurannya menjadi "
+        f"{IMG_SIZE}×{IMG_SIZE} piksel dan menormalisasi nilai pikselnya ke rentang 0–1, "
+        "mengikuti tahap *preprocessing* yang sama seperti pada proses pelatihan model. "
+        "Gambar yang telah diproses kemudian dilewatkan ke model CNN, yang menghasilkan "
+        "sebuah nilai probabilitas. Nilai ini dibandingkan dengan ambang keputusan (*decision "
+        "threshold*) untuk menentukan apakah gambar tersebut diklasifikasikan sebagai Apple "
+        "atau Orange, beserta tingkat keyakinan modelnya."
+    )
+
+    st.markdown("#### Arsitektur & Data")
+    st.write(
+        "Model dibangun menggunakan beberapa lapisan konvolusi (*Convolutional Layer*) yang "
+        "dilatih untuk mengenali pola visual seperti warna, tekstur, dan bentuk khas masing-"
+        "masing buah. Model dilatih menggunakan dataset berisi 796 citra apel dan jeruk "
+        "berukuran 128×128 piksel, dengan pembagian data latih, validasi, dan uji untuk "
+        "memastikan performa model dapat diukur secara objektif."
+    )
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Accuracy", f"{MODEL_INFO['accuracy']*100:.2f}%")
+    m2.metric("F1 Score", f"{MODEL_INFO['f1']:.4f}")
+    m3.metric("Total Params", MODEL_INFO["params"])
+    m4.metric("Epochs", MODEL_INFO["epochs"])
+
+    st.markdown("#### Batasan Aplikasi")
+    st.write(
+        "Model dilatih secara khusus untuk membedakan dua kelas buah, yaitu apel dan jeruk. "
+        "Akurasi prediksi dapat menurun apabila gambar memiliki pencahayaan yang kurang "
+        "memadai, latar belakang yang ramai, objek yang tidak fokus, atau menampilkan buah "
+        "selain kedua kelas tersebut. Aplikasi ini dikembangkan untuk tujuan pembelajaran dan "
+        "demonstrasi, bukan untuk penggunaan komersial."
+    )
+
+    st.markdown("#### Informasi Proyek")
+    st.write(
+        "Dikembangkan oleh **Nada Thahira Sosa** (Kode CaAs 2601) sebagai proyek Big Data / "
+        "Machine Learning, menggunakan TensorFlow/Keras untuk pemodelan dan Streamlit untuk "
+        "antarmuka serta deployment aplikasi."
     )
 
 st.markdown(

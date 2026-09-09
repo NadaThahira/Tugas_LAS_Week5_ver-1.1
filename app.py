@@ -125,21 +125,7 @@ def preprocess_image(image_bytes: bytes) -> np.ndarray:
 # --------------------------------------------------------------------------------------
 # SIDEBAR
 # --------------------------------------------------------------------------------------
-with st.sidebar:
-    st.markdown("### 🍏 Menu")
-    threshold = st.slider(
-        "Ambang keputusan (decision threshold)",
-        min_value=0.30, max_value=0.70, value=0.50, step=0.01,
-        help="Probabilitas > threshold → diprediksi sebagai Orange. Geser untuk melihat "
-             "efek trade-off precision/recall secara interaktif.",
-    )
-    st.divider()
-    st.markdown("### ℹ️ Tentang Proyek")
-    st.caption(
-        "Klasifikasi citra biner **Apple vs Orange** menggunakan Custom CNN yang dibangun "
-        "dari nol, dilatih pada dataset 796 gambar berukuran 128×128."
-    )
-    st.markdown("**Dibuat oleh:** Nada Thahira Sosa · Kode CaAs 2601")
+threshold = 0.50
 
 # --------------------------------------------------------------------------------------
 # HERO HEADER
@@ -179,13 +165,12 @@ with tab_predict:
         model = load_model(MODEL_PATH)
 
         if model is None:
-            st.markdown("<div class='card'>", unsafe_allow_html=True)
-            st.warning(
-                f"File model `{MODEL_PATH}` tidak ditemukan di folder deploy. "
-                "Pastikan file .h5 hasil training berada di root repo, sejajar dengan app.py, "
-                "dengan nama persis `custom_cnn_model.h5`."
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
+            with st.container(border=True):
+                st.warning(
+                    f"File model `{MODEL_PATH}` tidak ditemukan di folder deploy. "
+                    "Pastikan file .h5 hasil training berada di root repo, sejajar dengan app.py, "
+                    "dengan nama persis `custom_cnn_model.h5`."
+                )
         elif uploaded is not None:
             batch = preprocess_image(uploaded.getvalue())
 
@@ -196,26 +181,22 @@ with tab_predict:
             confidence = prob_orange if label == "Orange" else 1 - prob_orange
             color = CLASS_COLOR[label]
 
-            st.markdown("<div class='card'>", unsafe_allow_html=True)
-            st.markdown(
-                f"<div class='result-badge' style='color:{color}'>"
-                f"{CLASS_EMOJI[label]} {label}</div>",
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                f"<div class='confidence-track'>"
-                f"<div class='confidence-fill' style='width:{confidence*100:.1f}%; background:{color};'></div>"
-                f"</div>",
-                unsafe_allow_html=True,
-            )
-            st.caption(f"Keyakinan model: **{confidence*100:.2f}%**  ·  waktu inferensi ≈ {latency:.0f} ms")
-            st.markdown("</div>", unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f"<div class='result-badge' style='color:{color}'>"
+                    f"{CLASS_EMOJI[label]} {label}</div>",
+                    unsafe_allow_html=True,
+                )
+                st.markdown(
+                    f"<div class='confidence-track'>"
+                    f"<div class='confidence-fill' style='width:{confidence*100:.1f}%; background:{color};'></div>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+                st.caption(f"Keyakinan model: **{confidence*100:.2f}%**  ·  waktu inferensi ≈ {latency:.0f} ms")
         else:
-            st.markdown(
-                "<div class='card'>Belum ada gambar yang diunggah. "
-                "Hasil prediksi akan muncul di sini.</div>",
-                unsafe_allow_html=True,
-            )
+            with st.container(border=True):
+                st.write("Belum ada gambar yang diunggah. Hasil prediksi akan muncul di sini.")
 
     if model is not None:
         st.markdown("#### 📊 Performa Model (Test Set)")
@@ -226,7 +207,7 @@ with tab_predict:
         m4.metric("Epochs", MODEL_INFO["epochs"])
 
 # --------------------------------------------------------------------------------------
-# TAB 2 — ABOUT & VERSIONING
+# TAB 2 — ABOUT
 # --------------------------------------------------------------------------------------
 with tab_about:
     st.markdown("#### Tentang Aplikasi")
@@ -234,34 +215,6 @@ with tab_about:
         "Aplikasi ini men-deploy model klasifikasi citra biner (Apple vs Orange) berbasis "
         "**Custom CNN** yang dibangun dari nol pada Week 2–4. Pengguna dapat mengunggah "
         "gambar dan langsung melihat hasil prediksi beserta tingkat keyakinan model."
-    )
-
-    st.markdown("#### 🧾 Riwayat Versi (Versioning)")
-    st.table(
-        {
-            "Versi": ["v1.0", "v2.0 (Final)"],
-            "Tanggal": ["-", "-"],
-            "Perubahan": [
-                "Rilis awal: unggah gambar + prediksi Custom CNN, tampilan dasar Streamlit.",
-                "Menambahkan slider decision threshold interaktif, caching model (optimisasi "
-                "kecepatan), indikator waktu inferensi, kartu metrik performa, dan "
-                "penyempurnaan UI (hero header, kartu hasil, progress bar keyakinan).",
-            ],
-            "Screenshot": ["_(lampirkan tangkapan layar di sini)_"] * 2,
-        }
-    )
-    st.caption(
-        "Catatan: isi kolom Tanggal dan Screenshot sesuai riwayat deployment Anda yang sebenarnya."
-    )
-
-    st.markdown("#### 📦 Struktur File Deployment")
-    st.code(
-        "project/\n"
-        "├── app.py\n"
-        "├── requirements.txt\n"
-        "├── runtime.txt\n"
-        "└── custom_cnn_model.h5",
-        language="text",
     )
 
 st.markdown(

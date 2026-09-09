@@ -198,14 +198,6 @@ with tab_predict:
             with st.container(border=True):
                 st.write("Belum ada gambar yang diunggah. Hasil prediksi akan muncul di sini.")
 
-    if model is not None:
-        st.markdown("#### 📊 Performa Model (Test Set)")
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Accuracy", f"{MODEL_INFO['accuracy']*100:.2f}%")
-        m2.metric("F1 Score", f"{MODEL_INFO['f1']:.4f}")
-        m3.metric("Total Params", MODEL_INFO["params"])
-        m4.metric("Epochs", MODEL_INFO["epochs"])
-
 # --------------------------------------------------------------------------------------
 # TAB 2 — ABOUT
 # --------------------------------------------------------------------------------------

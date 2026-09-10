@@ -249,7 +249,7 @@ with tab_about:
 
     st.markdown("#### Informasi Proyek")
     st.write(
-        "Dikembangkan oleh **Nada Thahira Sosa** (Kode CaAs 2601) sebagai proyek Big Data / "
+        "Dikembangkan oleh **Nada Thahira Sosa** sebagai proyek Big Data / "
         "Machine Learning, menggunakan TensorFlow/Keras untuk pemodelan dan Streamlit untuk "
         "antarmuka serta deployment aplikasi."
     )

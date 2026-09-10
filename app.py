@@ -249,9 +249,9 @@ with tab_about:
 
     st.markdown("#### Informasi Proyek")
     st.write(
-        "Dikembangkan oleh **Nada Thahira Sosa** sebagai proyek Big Data / "
-        "Machine Learning, menggunakan TensorFlow/Keras untuk pemodelan dan Streamlit untuk "
-        "antarmuka serta deployment aplikasi."
+        "Aplikasi ini dikembangkan sebagai bagian dari proyek Big Data / Machine Learning, "
+        "menggunakan TensorFlow/Keras untuk pemodelan dan Streamlit untuk antarmuka serta "
+        "deployment aplikasi."
     )
 
 st.markdown(
